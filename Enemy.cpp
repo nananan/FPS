@@ -48,7 +48,6 @@ void Enemy::render()
       glRotatef(angolo-90, 0, 1, 0);
       rotateAllB = false;
     }
-//     model->drawModel();
     glCallList(creeper);
   
   glPopMatrix();

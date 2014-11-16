@@ -38,6 +38,8 @@ protected:
   void createFinishingLine();
   
 private:
+  void plusLife();
+  void deleteObject();
   void processEvent();
   void processMovement();
   void processDown(SDL_Keysym& keysym);
@@ -54,23 +56,34 @@ private:
   int life;
   GLfloat angolo;
   float start = 0;
+  int pausedTick = 0;
   
   HudText* pauseText;
   HudText* winText;
   HudText* loseText;
   HudText* timerText;
   HudText* lifeText;
+  HudText* lifePlusText;
+  
+  SDL_Color color = {0, 20, 140, 255};
+  SDL_Color color2 = {255,0,0, 255};
+  
+  int cont;
   
   bool quit;
   bool moveUp;
   bool moveDown;
   bool rotateLeft;
   bool rotateRight;
+  bool youLoseTime;
   bool boom;
   bool MOVE;
   bool win;
   bool lose;
   bool pause;
+  bool lifePlus;
+  bool lifePlusF;
+  bool lifePlusSecond;
   bool collision = false;
   bool youLose = false;
 };

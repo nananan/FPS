@@ -9,7 +9,7 @@
 #include "Scacchiera.h"
 #include "AbstractObject.h"
 
-#define appross 1.40
+#define appross 0.45
 
 class Player: public AbstractObject
 {

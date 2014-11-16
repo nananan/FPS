@@ -11,6 +11,8 @@ public:
   virtual void render();
   GLfloat getRadius();
   
+  void setPause(bool pause);
+  
   bool collisionLine(float forwardX, float xPlayer, float forwardY, float yPlayer);
   
 private:
@@ -19,6 +21,7 @@ private:
   GLuint textureId;
   
   int rotate = 0;
+  bool pause = false;
 };
 
 #endif

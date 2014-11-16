@@ -37,7 +37,7 @@ public:
 private:
   void initGL(int w, int h);
   bool initSDL(int w, int h, const char* windowTitle);
-  void renderText(int X, int Y, int dim, const string& Text);
+  void renderText(int X, int Y, int dim, SDL_Color color, const string& Text);
   list<AbstractObject*> objectAfterCamera;
   list<AbstractObject*> objectBeforeCamera;
   list<HudText*> text;
@@ -49,7 +49,6 @@ private:
   GLfloat specref[4];
   GLfloat lightPos[4];
   GLfloat  spotDir[3];
-  SDL_Color color = { 255, 255, 0, 255 };
   
   bool WIN = false;
   bool LOSE = false;

@@ -2,29 +2,25 @@
 
 GameEngine:: GameEngine(int w, int h, const char* windowTitle)
 {
-  ambientLight[0] = 0.9;
-  ambientLight[1] = 0.9;
-  ambientLight[2] = 0.9;
+  ambientLight[0] = 0.5;
+  ambientLight[1] = 0.5;
+  ambientLight[2] = 0.5;
   ambientLight[3] = 1.0;
 
-  specular[0] = 0.9;
-  specular[1] = 0.9;
-  specular[2] = 0.9;
+  specular[0] = 0.3;
+  specular[1] = 0.3;
+  specular[2] = 0.3;
   specular[3] = 1.0;
 
-  specref[0] = 0.2;
-  specref[1] = 0.2;
-  specref[2] = 0.2;
+  specref[0] = 0.5;
+  specref[1] = 0.5;
+  specref[2] = 0.5;
   specref[3] = 1.0;
 
-  lightPos[0] = 0.7;
-  lightPos[1] = 0.7;
-  lightPos[2] = 0.9;
-  lightPos[3] = 1.0;
-
-  spotDir[0] = 0.0;
-  spotDir[1] = 0.0;
-  spotDir[2] = -1.0;
+  lightPos[0] = 50.0;
+  lightPos[1] = 50.0;
+  lightPos[2] = 100.0;
+  lightPos[3] = 0.0;
 
   initSDL(w, h, windowTitle);
   initGL(w, h);
@@ -97,9 +93,9 @@ bool GameEngine:: initSDL(int w, int h, const char* windowTitle)
     success = false;    
   }
   
-  music = Mix_LoadMUS("audio/djShadow.ogg");
-  win = Mix_LoadMUS("audio/win.ogg");
-  lose = Mix_LoadMUS("audio/gameover.ogg");
+  music = Mix_LoadMUS("audio/Loop.ogg");
+  win = Mix_LoadMUS("audio/Win.ogg");
+  lose = Mix_LoadMUS("audio/gameOver.ogg");
   
   if (music == NULL || win == NULL || lose == NULL)
     cout<<"ERRORE: "<< Mix_GetError() <<endl;
@@ -112,9 +108,10 @@ bool GameEngine:: initSDL(int w, int h, const char* windowTitle)
   return success;
 }
 
-void GameEngine::renderText(int X, int Y, int dim, const string& Text)
+void GameEngine::renderText(int X, int Y, int dim, SDL_Color color, const string& Text)
 {
   font = TTF_OpenFont( "fonts/DIGITALDREAMFATNARROW.ttf", dim);
+  
   SDL_Surface *Message = TTF_RenderText_Blended(font, Text.c_str(), color);
   unsigned Texture = 0;
   
@@ -147,17 +144,16 @@ void GameEngine::renderText(int X, int Y, int dim, const string& Text)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  /*Draw this texture on a quad with the given xyz coordinates.*/
   glColor4f(1.0, 1.0, 1.0, 1.0);
   glBegin(GL_QUADS);
-	  glTexCoord2d(0, 0); 
-	  glVertex2f(X, Y);
-	  glTexCoord2d(1, 0); 
-	  glVertex2f(X+Message->w, Y);
-	  glTexCoord2d(1, 1); 
-	  glVertex2f(X+Message->w, Y+Message->h);
-	  glTexCoord2d(0, 1); 
-	  glVertex2f(X, Y+Message->h);
+    glTexCoord2d(0, 0); 
+    glVertex2f(X, Y);
+    glTexCoord2d(1, 0); 
+    glVertex2f(X+Message->w, Y);
+    glTexCoord2d(1, 1); 
+    glVertex2f(X+Message->w, Y+Message->h);
+    glTexCoord2d(0, 1); 
+    glVertex2f(X, Y+Message->h);
   glEnd();
 
   glEnable(GL_DEPTH_TEST);
@@ -166,9 +162,9 @@ void GameEngine::renderText(int X, int Y, int dim, const string& Text)
   
   reshape(width, height);
   
-  /*Clean up.*/
   glDeleteTextures(1, &Texture);
   glDisable(GL_TEXTURE_2D);
+  TTF_CloseFont(font);
   SDL_FreeSurface(Message);
 }
 
@@ -196,7 +192,7 @@ void GameEngine::initGL(int w, int h)
   
   glEnable(GL_LIGHTING);
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-  glLightfv(GL_LIGHT0,GL_DIFFUSE,ambientLight);
+  glLightfv(GL_LIGHT0,GL_DIFFUSE, specular);
   glLightfv(GL_LIGHT0,GL_SPECULAR,specular);
   glLightfv(GL_LIGHT0,GL_POSITION,lightPos);
   glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,spotDir);
@@ -255,7 +251,7 @@ void GameEngine::display()
   
   for (list<HudText*>::iterator i=text.begin(); i!=text.end(); i++)
   {
-    renderText((*i)->getX(), (*i)->getY(), (*i)->getDim(), (*i)->getText());
+    renderText((*i)->getX(), (*i)->getY(), (*i)->getDim(), (*i)->getColor(), (*i)->getText());
   }
 }
 

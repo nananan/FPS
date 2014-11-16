@@ -48,13 +48,15 @@ bool collisionWithWall(float x, float y, float radius, vector<Wall*> wall)
 
 bool Bullet::collision(Enemy* enemy, vector<Wall*> wall)
 {
+  srand(time(0));
   float rad = player->getAngolo()*3.14 / 180;
-  float x1 = 0, y1 = 0;
+  float x1, y1;
+  calcolaCoordinateEnemy(x1, y1, 10, 100);  
   
   if ((getX() >= enemy->getX()-enemy->getSize().width && getX() <= enemy->getX() + enemy->getSize().width)
   && (getY() >= enemy->getY()-enemy->getSize().height && getY() <= enemy->getY() + enemy->getSize().height))
   {
-    while (collisionWithWall(x1, y1, enemy->getSize().width, wall)) // || collisionWithEnemy(x, y, enemy[i]->getSize().width))
+    while (collisionWithWall(x1, y1, enemy->getSize().width, wall))
       calcolaCoordinateEnemy(x1, y1, 10, 100);
     enemy->setPosition(x1, y1, 0.0);
     return true;

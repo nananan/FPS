@@ -23,10 +23,12 @@ void FinishingLine::render()
   glPushMatrix();
     
     glRotatef(rotate, 0, 0, 1);
-    
-    rotate += 1.0;
-    if (rotate >= 360)
+    if (!pause)
+    {
+      rotate += 1.0;
+      if (rotate >= 360)
       rotate = 0;
+    }
     
     glColor4f(1.0, 1.0, 1.0, 1.0);
     gluSphere(quad, radius, 20, 20);
@@ -38,6 +40,11 @@ void FinishingLine::render()
 GLfloat FinishingLine::getRadius()
 {
   return radius;
+}
+
+void FinishingLine::setPause(bool pause)
+{
+  this->pause = pause;
 }
 
 bool FinishingLine::collisionLine(float forwardX, float xPlayer, float forwardY, float yPlayer)

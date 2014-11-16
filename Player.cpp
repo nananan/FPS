@@ -8,23 +8,23 @@ Player::Player(Camera* camera, Scacchiera* scacchi, vector<Wall*> wall): Abstrac
   
   setPosition(0, 0, 0);
   
-   this->model = new Model();
-   this->model2 = new Model();
-   this->model3 = new Model();
-   model->loadModel("snail/snail.obj");
-   model2->loadModel("snail/helmet.obj");
-   model3->loadModel("snail/snailhouse.obj");
-   
-   model->scaleModel(0.09);
-   model2->scaleModel(0.09);
-   model3->scaleModel(0.07);
-   model->calcDim();
-   
-   snail = model->getGlList();
-   helmet = model2->getGlList();
-   snailhouse = model3->getGlList();
-   
-   setSize(model->getDim().width, model->getDim().height, model->getDim().depth);
+  this->model = new Model();
+  this->model2 = new Model();
+  this->model3 = new Model();
+  model->loadModel("snail/snail.obj");
+  model2->loadModel("snail/helmet.obj");
+  model3->loadModel("snail/snailhouse.obj");
+  
+  model->scaleModel(0.09);
+  model2->scaleModel(0.09);
+  model3->scaleModel(0.07);
+  model->calcDim();
+  
+  snail = model->getGlList();
+  helmet = model2->getGlList();
+  snailhouse = model3->getGlList();
+  
+  setSize(model->getDim().width, model->getDim().height, model->getDim().depth);
 //   model->getModelInfo();
 }
 
@@ -33,10 +33,7 @@ void Player::render()
   glPushMatrix();
      glTranslated(0.0, -0.9, -model->getDim().width-1);
      glRotatef(-90, 0, 1, 0);
-//      rotate += 0.5;
-//      if (rotate >= 360)
-//       rotate = 0;
-//        
+     
      if (moveLeft)
      {
        glRotatef(45, 1, 1, 0);
@@ -69,8 +66,10 @@ bool Player::collisionPlayerWithWall(float x, float y)
 {
   for (int i = 0; i < wall.size(); i++)
   {
-    if ((x <= wall[i]->getX() + wall[i]->getSize().width && x >= wall[i]->getX())
-      && (y <= wall[i]->getY() + wall[i]->getSize().height && y >= wall[i]->getY()))
+    if ((x+appross <= wall[i]->getX() + wall[i]->getSize().width && x+appross >= wall[i]->getX())
+      && (y+appross <= wall[i]->getY() + wall[i]->getSize().height && y+appross >= wall[i]->getY()) || 
+    (x-appross <= wall[i]->getX() + wall[i]->getSize().width && x-appross >= wall[i]->getX())
+      && (y-appross <= wall[i]->getY() + wall[i]->getSize().height && y-appross >= wall[i]->getY()))
       return true;
   }
   return false;
